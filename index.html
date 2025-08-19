@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,25 +11,38 @@
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .checkbox-container:hover .checkmark {
             border-color: #dc2626;
         }
-        .checkbox-container input:checked ~ .checkmark {
+
+        .checkbox-container input:checked~.checkmark {
             background-color: #dc2626;
             border-color: #dc2626;
         }
+
         .checkmark:after {
             content: "";
             position: absolute;
             display: none;
         }
-        .checkbox-container input:checked ~ .checkmark:after {
+
+        .checkbox-container input:checked~.checkmark:after {
             display: block;
         }
+
         .checkbox-container .checkmark:after {
             left: 7px;
             top: 3px;
@@ -38,24 +52,29 @@
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
+
         @media (max-width: 768px) {
             .grid-cols-2 {
                 grid-template-columns: repeat(1, 1fr);
             }
+
             .trip-details {
                 order: 2;
             }
+
             .packing-list {
                 order: 1;
                 margin-bottom: 1.5rem;
             }
         }
+
         .category-header {
             background-color: #fee2e2;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             margin-bottom: 0.5rem;
         }
+
         .custom-item-form {
             background-color: #f9fafb;
             padding: 1rem;
@@ -64,10 +83,12 @@
         }
     </style>
 </head>
+
 <body class="bg-gray-50 min-h-screen">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <header class="text-center mb-10 relative">
-<h1 class="text-4xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent mb-2">🧳 Smart Packing List</h1>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent mb-2">
+                🧳 Smart Packing List</h1>
             <p class="text-gray-600">✨ Generate your perfect packing list based on your trip details ✨</p>
         </header>
 
@@ -75,25 +96,30 @@
             <!-- Trip Details Form -->
             <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-1">
                 <h2 class="text-xl font-semibold text-red-700 mb-4 border-b-2 border-red-100 pb-2">✈️ Trip Details</h2>
-                
+
                 <div class="space-y-5">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" id="nightsLabel">Number of Nights</label>
-                        <input type="number" id="nights" min="1" value="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <label class="block text-sm font-medium text-gray-700 mb-1" id="nightsLabel">Number of
+                            Nights</label>
+                        <input type="number" id="nights" min="1" value="3"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
-                    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1" id="weatherLabel">Weather</label>
-                        <select id="weather" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <select id="weather"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                             <option value="warm">☀️ Warm</option>
                             <option value="medium" selected>🌤️ Medium</option>
                             <option value="cold">❄️ Cold</option>
                         </select>
                     </div>
-                    
+
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" id="accommodationLabel">Accommodation Type</label>
-                        <select id="accommodation" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <label class="block text-sm font-medium text-gray-700 mb-1"
+                            id="accommodationLabel">Accommodation Type</label>
+                        <select id="accommodation"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                             <option value="hotel">Hotel</option>
                             <option value="hostel">Hostel</option>
                             <option value="mountain_cabin">Mountain Cabin</option>
@@ -116,25 +142,29 @@
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="hiking" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox" id="hiking"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                                 <span class="text-sm text-gray-700">Hiking</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="climbing" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox" id="climbing"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                                 <span class="text-sm text-gray-700">Climbing</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="abroad" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox" id="abroad"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                                 <span class="text-sm text-gray-700">Abroad</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="flight" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox" id="flight"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                                 <span class="text-sm text-gray-700">Flight</span>
                             </label>
                         </div>
@@ -146,34 +176,38 @@
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" id="washing_machine" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <input type="checkbox" id="washing_machine"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
                                 <span class="text-sm text-gray-700">Washing Machine Available</span>
                             </label>
                         </div>
                     </div>
-                    
-                    <button id="generateBtn" class="w-full bg-gradient-to-r from-red-600 to-red-800 text-white py-3 px-4 rounded-lg hover:from-red-700 hover:to-red-900 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-md">
+
+                    <button id="generateBtn"
+                        class="w-full bg-gradient-to-r from-red-600 to-red-800 text-white py-3 px-4 rounded-lg hover:from-red-700 hover:to-red-900 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-md">
                         ✨ Generate Packing List ✨
                     </button>
                 </div>
             </div>
-            
+
             <!-- Packing List -->
             <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2 packing-list">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-red-700 border-b-2 border-red-100 pb-2">📋 Your Packing List</h2>
+                    <h2 class="text-xl font-semibold text-red-700 border-b-2 border-red-100 pb-2">📋 Your Packing List
+                    </h2>
                     <div class="text-sm text-gray-500">
-                        <span id="packedCount">0</span> <span id="packedStatusText">of</span> <span id="totalCount">0</span> <span id="packedText">packed</span>
+                        <span id="packedCount">0</span> <span id="packedStatusText">of</span> <span
+                            id="totalCount">0</span> <span id="packedText">packed</span>
                     </div>
                 </div>
-                
+
                 <div id="packingList" class="space-y-3">
                     <div class="text-center py-10 text-gray-400">
                         <i class="fas fa-suitcase text-4xl mb-2 text-indigo-300"></i>
-                        <p class="text-indigo-400">Enter your trip details and generate your packing list  ✨</p>
+                        <p class="text-indigo-400">Enter your trip details and generate your packing list ✨</p>
                     </div>
                 </div>
-                
+
                 <div id="progressBar" class="mt-6 hidden">
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div id="progressFill" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
@@ -184,15 +218,15 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-let currentItems = [];
-const generateBtn = document.getElementById('generateBtn');
+        document.addEventListener('DOMContentLoaded', function () {
+            let currentItems = [];
+            const generateBtn = document.getElementById('generateBtn');
             const packingList = document.getElementById('packingList');
             const packedCount = document.getElementById('packedCount');
             const totalCount = document.getElementById('totalCount');
             const progressBar = document.getElementById('progressBar');
             const progressFill = document.getElementById('progressFill');
-            
+
             generateBtn.addEventListener('click', generatePackingList);
             function generatePackingList() {
                 console.log('Generate button clicked'); // Debug log
@@ -208,23 +242,23 @@ const generateBtn = document.getElementById('generateBtn');
                 const fotos = document.getElementById('fotos').checked;
                 const accommodation = document.getElementById('accommodation').value;
                 const washing_machine = document.getElementById('washing_machine').checked;
-                
+
                 // Generate packing list based on parameters
                 let items = [];
-                
+
                 // Helper function to add item with duplicate check
                 function addItem(name, quantity, category) {
                     // Check if item already exists (case-insensitive)
-                    const existingItem = items.find(item => 
+                    const existingItem = items.find(item =>
                         item.name.toLowerCase() === name.toLowerCase()
                     );
-                    
+
                     if (!existingItem) {
                         items.push({ name, quantity, category });
                     }
                     // Could optionally merge quantities here if desired
                 }
-                
+
                 // Clothing basics - adjust quantities based on washing machine availability
                 if (washing_machine) {
                     addItem('Shirts', Math.min(7, Math.ceil(nights)), 'clothing');
@@ -236,7 +270,7 @@ const generateBtn = document.getElementById('generateBtn');
                     addItem('Underpants', nights, 'clothing');
                     addItem('Socks', nights, 'clothing');
                 }
-                
+
                 if (weather === 'warm') {
                     addItem('Sunscreen', 1, 'personal');
                     addItem('Sunglasses', 1, 'personal');
@@ -270,11 +304,11 @@ const generateBtn = document.getElementById('generateBtn');
                         addItem('Pants', Math.ceil(nights / 5), 'clothing');
                     }
                 }
-                
+
                 if (nights > 5) {
-                  addItem('Additional Shoes', 1, 'clothing')
+                    addItem('Additional Shoes', 1, 'clothing')
                 }
-                
+
                 // Beach items
                 if (beach) {
                     addItem('Swimsuit', 1, 'beach');
@@ -282,7 +316,7 @@ const generateBtn = document.getElementById('generateBtn');
                     addItem('Beach towel', 1, 'beach');
                     addItem('Sun hat', 1, 'beach');
                 }
-                
+
                 // Sauna items
                 if (sauna) {
                     addItem('Swimsuit', 1, 'beach');
@@ -291,7 +325,7 @@ const generateBtn = document.getElementById('generateBtn');
                     addItem('Slippers', 1, '');
                     addItem('Sauna hat', 1, 'sauna');
                 }
-                
+
                 // Hiking items
                 if (hiking) {
                     addItem('Hiking boots', 1, 'hiking');
@@ -307,7 +341,7 @@ const generateBtn = document.getElementById('generateBtn');
                         addItem('Sunglasses', 1, 'personal');
                     }
                 }
-                
+
                 // Climbing items
                 if (climbing) {
                     addItem('Climbing shoes', 1, 'climbing');
@@ -316,7 +350,7 @@ const generateBtn = document.getElementById('generateBtn');
                     addItem('Climbing Harness', 1, 'climbing');
                     addItem('Helmet', 1, 'climbing');
                 }
-                
+
                 // Electronics
                 addItem('Phone', 1, 'electronics');
                 addItem('Phone charger', 1, 'electronics');
@@ -327,26 +361,26 @@ const generateBtn = document.getElementById('generateBtn');
                 addItem('Steam Deck', 1, 'electronics');
                 addItem('USB-C Adaptor', 1, 'electronics');
                 addItem('HDMI Cable', 1, 'electronics');
-                
+
                 if (fotos) {
                     addItem('Camera', 1, 'electronics');
                     addItem('Camera charger', 1, 'electronics');
                 }
-                
+
                 // Travel essentials
                 if (abroad) {
                     addItem('Passport', 1, 'travel');
                     addItem('Travel adapter', 1, 'travel');
                 }
-                
+
                 if (flight) {
                     addItem('Neck pillow', 1, 'travel');
                     addItem('Earplugs', 1, 'accommodation');
                 }
-                
+
                 // Accommodation items
                 const accommodationType = document.getElementById('accommodation').value;
-                
+
                 if (accommodationType === 'hostel') {
                     addItem('Padlock', 1, 'accommodation');
                     addItem('Earplugs', 1, 'accommodation');
@@ -360,7 +394,7 @@ const generateBtn = document.getElementById('generateBtn');
                     addItem('Knive', 1, 'accommodation');
                     addItem('Spicery', 1, 'accommodation');
                 }
-                
+
                 // Personal care
                 addItem('Toothbrush', 1, 'personal');
                 addItem('Toothpaste', 1, 'personal');
@@ -374,7 +408,7 @@ const generateBtn = document.getElementById('generateBtn');
                 if (nights > 7) {
                     addItem('Nail Clipper', 1, 'personal');
                 }
-                
+
                 // Miscellaneous
                 addItem('Cash', 1, 'misc');
                 addItem('Water Bottle', 1, 'misc');
@@ -386,12 +420,12 @@ const generateBtn = document.getElementById('generateBtn');
                 addItem('Books/E-Reader', 1, 'misc');
                 addItem('Washing bag', 1, 'clothing');
                 addItem('Condoms', 1, 'misc');
-                
+
                 console.log('Generated items:', items); // Debug log
                 // Display the packing list
                 displayPackingList(items);
             }
-            
+
             function displayPackingList(items) {
                 currentItems = items; // Store the current items
                 packingList.innerHTML = '';
@@ -399,7 +433,7 @@ const generateBtn = document.getElementById('generateBtn');
                 packedCount.textContent = '0';
                 progressBar.classList.remove('hidden');
                 progressFill.style.width = '0%';
-                
+
                 // Group items by category
                 const categories = {};
                 items.forEach(item => {
@@ -408,77 +442,77 @@ const generateBtn = document.getElementById('generateBtn');
                     }
                     categories[item.category].push(item);
                 });
-                
+
                 // Display items by category
                 for (const category in categories) {
                     const categoryDiv = document.createElement('div');
                     categoryDiv.className = 'mb-6 fade-in';
-                    
+
                     const categoryTitle = document.createElement('div');
                     categoryTitle.className = 'mb-3';
-                    
+
                     const titleRow = document.createElement('div');
                     titleRow.className = 'flex items-center justify-between mb-1';
                     titleRow.innerHTML = `
                         <h3 class="text-lg font-medium text-indigo-700 capitalize">${category}</h3>
                         <span class="text-sm font-normal text-gray-500">0/${categories[category].length}</span>
                     `;
-                    
+
                     const progressBar = document.createElement('div');
                     progressBar.className = 'w-full bg-gray-200 rounded-full h-1.5 mb-1';
                     progressBar.innerHTML = `
                         <div class="bg-indigo-600 h-1.5 rounded-full category-progress" style="width: 0%" data-category="${category}"></div>
                     `;
-                    
+
                     categoryDiv.appendChild(titleRow);
                     categoryDiv.appendChild(progressBar);
-                    
+
                     const itemsList = document.createElement('div');
                     itemsList.className = 'space-y-2';
-                    
+
                     categories[category].forEach((item, index) => {
                         const itemDiv = document.createElement('div');
                         itemDiv.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
                         itemDiv.dataset.category = category;
-                        
+
                         const label = document.createElement('label');
                         label.className = 'checkbox-container flex items-center space-x-3 cursor-pointer';
-                        
+
                         const checkbox = document.createElement('input');
                         checkbox.type = 'checkbox';
                         checkbox.className = 'opacity-0 absolute';
                         checkbox.addEventListener('change', updatePackedCount);
-                        
+
                         const checkmark = document.createElement('span');
                         checkmark.className = 'checkmark w-5 h-5 border border-gray-300 rounded-md bg-white flex-shrink-0';
-                        
+
                         const itemText = document.createElement('span');
                         itemText.className = 'text-gray-700';
                         itemText.textContent = `${item.name}${item.quantity > 1 ? ` (${item.quantity})` : ''}`;
-                        
+
                         label.appendChild(checkbox);
                         label.appendChild(checkmark);
                         label.appendChild(itemText);
-                        
+
                         itemDiv.appendChild(label);
                         itemsList.appendChild(itemDiv);
                     });
-                    
+
                     categoryDiv.appendChild(itemsList);
                     packingList.appendChild(categoryDiv);
                 }
             }
-            
+
             function updatePackedCount() {
                 // Update main progress
                 const checkboxes = document.querySelectorAll('#packingList input[type="checkbox"]');
                 const checkedCount = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
                 packedCount.textContent = checkedCount;
-                
+
                 const total = parseInt(totalCount.textContent);
                 const percentage = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
                 progressFill.style.width = `${percentage}%`;
-                
+
                 // Change color based on completion
                 if (percentage === 100) {
                     progressFill.classList.remove('bg-red-600');
@@ -487,7 +521,7 @@ const generateBtn = document.getElementById('generateBtn');
                     progressFill.classList.remove('bg-green-500');
                     progressFill.classList.add('bg-red-600');
                 }
-                
+
                 // Update category progress bars
                 const categories = {};
                 document.querySelectorAll('[data-category]').forEach(item => {
@@ -495,7 +529,7 @@ const generateBtn = document.getElementById('generateBtn');
                     if (!categories[category]) {
                         categories[category] = { total: 0, checked: 0 };
                     }
-                    
+
                     const checkbox = item.querySelector('input[type="checkbox"]');
                     if (checkbox) {
                         categories[category].total++;
@@ -504,16 +538,16 @@ const generateBtn = document.getElementById('generateBtn');
                         }
                     }
                 });
-                
+
                 // Update each category's progress
                 for (const category in categories) {
                     const { total, checked } = categories[category];
                     const categoryPercentage = total > 0 ? Math.round((checked / total) * 100) : 0;
-                    
+
                     // Find the progress bar and counter for this category
                     const progressBar = document.querySelector(`.category-progress[data-category="${category}"]`);
                     const counter = document.querySelector(`[data-category="${category}"] .text-sm`);
-                    
+
                     if (progressBar) {
                         progressBar.style.width = `${categoryPercentage}%`;
                         // Change color based on completion
@@ -525,7 +559,7 @@ const generateBtn = document.getElementById('generateBtn');
                             progressBar.classList.add('bg-indigo-600');
                         }
                     }
-                    
+
                     if (counter) {
                         counter.textContent = `${checked}/${total}`;
                     }
@@ -534,6 +568,5 @@ const generateBtn = document.getElementById('generateBtn');
         });
     </script>
 </body>
+
 </html>
-
-
