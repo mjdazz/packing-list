@@ -99,7 +99,31 @@ const translations = {
         chewingGum: 'Chewing gum',
         books: 'Books/E-Reader',
         washingBag: 'Washing bag',
-        condoms: 'Condoms'
+        condoms: 'Condoms',
+        hdmiCable: 'HDMI cable',
+
+        // Weather options
+        weatherWarm: 'Warm',
+        weatherMedium: 'Medium',
+        weatherCold: 'Cold',
+
+        // Categories
+        categoryClothing: 'Clothing',
+        categoryPersonal: 'Personal Care',
+        categoryBeach: 'Beach',
+        categorySauna: 'Sauna',
+        categoryHiking: 'Hiking',
+        categoryClimbing: 'Climbing',
+        categoryElectronics: 'Electronics',
+        categoryTravel: 'Travel',
+        categoryAccommodation: 'Accommodation',
+        categoryMisc: 'Miscellaneous',
+
+        // Accommodation types
+        accommodationHotel: 'Hotel',
+        accommodationHostel: 'Hostel',
+        accommodationMountainCabin: 'Mountain Cabin',
+        accommodationHolidayHome: 'Holiday Home'
     },
     de: {
         title: 'Intelligente Packliste',
@@ -132,8 +156,8 @@ const translations = {
         sockPairs: 'Sockenpaare',
         sunscreen: 'Sonnencreme',
         sunglasses: 'Sonnenbrille',
-        vest: 'Tanktop',
-        vests: 'Tanktops',
+        vest: 'Weste',
+        vests: 'Westen',
         pairOfShorts: 'Kurze Hose',
         pairsOfShorts: 'Kurze Hosen',
         jacket: 'Jacke',
@@ -200,7 +224,31 @@ const translations = {
         chewingGum: 'Kaugummi',
         books: 'Bücher/E-Reader',
         washingBag: 'Wäschebeutel',
-        condoms: 'Kondome'
+        condoms: 'Kondome',
+        hdmiCable: 'HDMI-Kabel',
+
+        // Weather options
+        weatherWarm: 'Warm',
+        weatherMedium: 'Mittel',
+        weatherCold: 'Kalt',
+
+        // Categories
+        categoryClothing: 'Kleidung',
+        categoryPersonal: 'Körperpflege',
+        categoryBeach: 'Strand',
+        categorySauna: 'Sauna',
+        categoryHiking: 'Wandern',
+        categoryClimbing: 'Klettern',
+        categoryElectronics: 'Elektronik',
+        categoryTravel: 'Reise',
+        categoryAccommodation: 'Unterkunft',
+        categoryMisc: 'Verschiedenes',
+
+        // Accommodation types
+        accommodationHotel: 'Hotel',
+        accommodationHostel: 'Hostel',
+        accommodationMountainCabin: 'Berghütte',
+        accommodationHolidayHome: 'Ferienwohnung'
     }
 };
 
@@ -210,64 +258,71 @@ function setLanguage(lang) {
     document.documentElement.lang = lang;
     document.body.setAttribute('data-lang', lang);
 
-    // Save the language preference
+    // Save the selected language to localStorage
     localStorage.setItem('preferredLanguage', lang);
 
-    // Update all translatable elements
-    document.querySelectorAll('.i18n').forEach(element => {
-        const key = element.getAttribute('data-key');
-        if (translations[lang] && translations[lang][key]) {
-            element.textContent = translations[lang][key];
+    // Store translations in the document's dataset for easy access
+    document.documentElement.setAttribute('data-translations', JSON.stringify(translations));
+
+    // Update the language toggle button
+    const languageToggle = document.getElementById('languageToggle');
+    if (languageToggle) {
+        const enSpan = languageToggle.querySelector('.en');
+        const deSpan = languageToggle.querySelector('.de');
+
+        if (lang === 'de') {
+            enSpan.classList.add('hidden');
+            deSpan.classList.remove('hidden');
+        } else {
+            enSpan.classList.remove('hidden');
+            deSpan.classList.add('hidden');
         }
-    });
+    }
 
-    // Update button text
-    document.querySelector('.en').classList.toggle('hidden', lang === 'de');
-    document.querySelector('.de').classList.toggle('hidden', lang === 'en');
-
-    // Update form fields
-    const formFields = {
-        'nightsLabel': 'nights',
-        'weatherLabel': 'weather',
-        'accommodationLabel': 'accommodation',
-        'beach': 'beach',
-        'sauna': 'sauna',
-        'hiking': 'hiking',
-        'climbing': 'climbing',
-        'abroad': 'abroad',
-        'flight': 'flight',
-        'fotos': 'photos',
-        'washing_machine': 'washingMachine',
-        'generateBtn': 'generateButton',
-        'packedStatusText': 'of',
-        'packedText': 'packed'
-    };
-
-    Object.entries(formFields).forEach(([id, key]) => {
-        const element = document.getElementById(id);
-        if (element) {
-            if (id === 'packedStatusText' || id === 'packedText') {
-                element.textContent = translations[lang][key];
-            } else if (element.tagName === 'LABEL') {
-                element.textContent = translations[lang][key];
-            } else if (element.tagName === 'BUTTON') {
-                element.textContent = translations[lang][key];
-            } else if (element.tagName === 'SPAN') {
+    // Update all translatable elements
+    const translatableElements = document.querySelectorAll('.i18n');
+    translatableElements.forEach(element => {
+        const key = element.getAttribute('data-key');
+        if (key && translations[lang] && translations[lang][key]) {
+            // Check if the element is an input placeholder
+            if (element.tagName === 'INPUT' && element.type !== 'submit' && element.type !== 'button') {
+                element.placeholder = translations[lang][key];
+            }
+            // Check if the element is an input value (for buttons and submits)
+            else if ((element.tagName === 'INPUT' && (element.type === 'submit' || element.type === 'button')) ||
+                     element.tagName === 'BUTTON') {
+                element.value = translations[lang][key];
+            }
+            // For all other elements, update the text content
+            else {
                 element.textContent = translations[lang][key];
             }
         }
     });
 
-    // Update the packing list title if it exists
-    const packingListTitle = document.querySelector('.packing-list h2');
-    if (packingListTitle) {
-        packingListTitle.textContent = translations[lang].yourPackingList;
-    }
+    // Update select options
+    const selectElements = document.querySelectorAll('select');
+    selectElements.forEach(select => {
+        const options = select.querySelectorAll('option');
+        options.forEach(option => {
+            // Find the span with i18n class inside the option
+            const i18nSpan = option.querySelector('.i18n');
+            if (i18nSpan) {
+                const key = i18nSpan.getAttribute('data-key');
+                if (key && translations[lang] && translations[lang][key]) {
+                    // Update the text of the span, not the option directly
+                    i18nSpan.textContent = translations[lang][key];
+                }
+            }
+        });
+    });
 
-    // Update the placeholder text if it exists
-    const placeholder = document.querySelector('#packingList .text-indigo-400');
-    if (placeholder) {
-        placeholder.textContent = translations[lang].enterDetails;
+    // Trigger a custom event for dynamic content that needs to update
+    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+
+    // Regenerate the packing list if it exists
+    if (typeof generatePackingList === 'function') {
+        generatePackingList();
     }
 }
 

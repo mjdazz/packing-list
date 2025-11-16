@@ -114,23 +114,20 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="weatherLabel" data-key="weather">Weather</label>
-                        <select id="weather"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
-                            <option value="warm">☀️ Warm</option>
-                            <option value="medium" selected>🌤️ Medium</option>
-                            <option value="cold">❄️ Cold</option>
+                        <select id="weather" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <option value="warm">☀️ <span class="i18n" data-key="weatherWarm">Warm</span></option>
+                            <option value="medium" selected>🌤️ <span class="i18n" data-key="weatherMedium">Medium</span></option>
+                            <option value="cold">❄️ <span class="i18n" data-key="weatherCold">Cold</span></option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n"
-                            id="accommodationLabel" data-key="accommodation">Accommodation Type</label>
-                        <select id="accommodation"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
-                            <option value="hotel">Hotel</option>
-                            <option value="hostel">Hostel</option>
-                            <option value="mountain_cabin">Mountain Cabin</option>
-                            <option value="holiday_home">Holiday Home</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="accommodationLabel" data-key="accommodation">Accommodation Type</label>
+                        <select id="accommodation" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <option value="hotel"><span class="i18n" data-key="accommodationHotel">Hotel</span></option>
+                            <option value="hostel"><span class="i18n" data-key="accommodationHostel">Hostel</span></option>
+                            <option value="mountain_cabin"><span class="i18n" data-key="accommodationMountainCabin">Mountain Cabin</span></option>
+                            <option value="holiday_home"><span class="i18n" data-key="accommodationHolidayHome">Holiday Home</span></option>
                         </select>
                     </div>
 
@@ -235,35 +232,37 @@
 
             // Load saved state if it exists
             function loadSavedState() {
-                const savedState = sessionStorage.getItem('packingListState');
-                if (savedState) {
-                    try {
-                        const state = JSON.parse(savedState);
+                try {
+                    const savedState = localStorage.getItem('packingListState');
+                    if (!savedState) return;
 
-                        // Restore form inputs
-                        if (state.formData) {
-                            if (state.formData.nights) document.getElementById('nights').value = state.formData.nights;
-                            if (state.formData.weather) document.getElementById('weather').value = state.formData.weather;
-                            if (state.formData.accommodation) document.getElementById('accommodation').value = state.formData.accommodation;
+                    const state = JSON.parse(savedState);
 
-                            const checkboxes = ['beach', 'sauna', 'hiking', 'climbing', 'abroad', 'flight', 'fotos', 'washing_machine'];
-                            checkboxes.forEach(id => {
-                                if (state.formData[id] !== undefined) {
-                                    document.getElementById(id).checked = state.formData[id];
-                                }
-                            });
-                        }
+                    // Restore form inputs
+                    if (state.formData) {
+                        if (state.formData.nights) document.getElementById('nights').value = state.formData.nights;
+                        if (state.formData.weather) document.getElementById('weather').value = state.formData.weather;
+                        if (state.formData.accommodation) document.getElementById('accommodation').value = state.formData.accommodation;
 
-                        // Restore items and checked state if available
-                        if (state.items && state.items.length > 0) {
-                            currentItems = state.items;
-                            displayPackingList(currentItems);
+                        const checkboxes = ['beach', 'sauna', 'hiking', 'climbing', 'abroad', 'flight', 'fotos', 'washing_machine'];
+                        checkboxes.forEach(id => {
+                            if (state.formData[id] !== undefined) {
+                                document.getElementById(id).checked = state.formData[id];
+                            }
+                        });
+                    }
 
-                            // Restore checked state after a small delay to allow DOM to update
+                    // Always regenerate the packing list from form data to ensure consistency
+                    if (state.formData) {
+                        // Generate the packing list
+                        generatePackingList();
+
+                        // Then restore the checked state after a small delay to ensure DOM is ready
+                        if (state.checkedItems) {
                             setTimeout(() => {
-                                if (state.checkedItems) {
+                                const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+                                if (checkboxes.length > 0) {
                                     state.checkedItems.forEach((isChecked, index) => {
-                                        const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
                                         if (checkboxes[index]) {
                                             checkboxes[index].checked = isChecked;
                                             // Trigger change event to update UI
@@ -271,36 +270,42 @@
                                             checkboxes[index].dispatchEvent(event);
                                         }
                                     });
+                                    // Update the progress after all checkboxes are set
+                                    updatePackedCount();
                                 }
                             }, 100);
                         }
-                    } catch (e) {
-                        console.error('Error loading saved state:', e);
-                        sessionStorage.removeItem('packingListState');
                     }
+                } catch (e) {
+                    console.error('Error loading saved state:', e);
+                    localStorage.removeItem('packingListState');
                 }
             }
 
-            // Save current state to session storage
+            // Save current state to localStorage
             function saveState() {
-                const state = {
-                    formData: {
-                        nights: document.getElementById('nights').value,
-                        weather: document.getElementById('weather').value,
-                        accommodation: document.getElementById('accommodation').value,
-                        beach: document.getElementById('beach').checked,
-                        sauna: document.getElementById('sauna').checked,
-                        hiking: document.getElementById('hiking').checked,
-                        climbing: document.getElementById('climbing').checked,
-                        abroad: document.getElementById('abroad').checked,
-                        flight: document.getElementById('flight').checked,
-                        fotos: document.getElementById('fotos').checked,
-                        washing_machine: document.getElementById('washing_machine').checked
-                    },
-                    items: currentItems,
-                    checkedItems: Array.from(document.querySelectorAll('.checkbox-container input[type="checkbox"]')).map(cb => cb.checked)
-                };
-                sessionStorage.setItem('packingListState', JSON.stringify(state));
+                try {
+                    const state = {
+                        formData: {
+                            nights: document.getElementById('nights').value,
+                            weather: document.getElementById('weather').value,
+                            accommodation: document.getElementById('accommodation').value,
+                            beach: document.getElementById('beach').checked,
+                            sauna: document.getElementById('sauna').checked,
+                            hiking: document.getElementById('hiking').checked,
+                            climbing: document.getElementById('climbing').checked,
+                            abroad: document.getElementById('abroad').checked,
+                            flight: document.getElementById('flight').checked,
+                            fotos: document.getElementById('fotos').checked,
+                            washing_machine: document.getElementById('washing_machine').checked
+                        },
+                        items: currentItems,
+                        checkedItems: Array.from(document.querySelectorAll('.checkbox-container input[type="checkbox"]')).map(cb => cb.checked)
+                    };
+                    localStorage.setItem('packingListState', JSON.stringify(state));
+                } catch (e) {
+                    console.error('Error saving state:', e);
+                }
             }
 
             // Add event listeners to form inputs to save state on change
@@ -560,12 +565,28 @@
             }
 
             function displayPackingList(items) {
-                currentItems = items; // Store the current items
+                // Clear the current packing list
                 packingList.innerHTML = '';
-                totalCount.textContent = items.length;
-                packedCount.textContent = '0';
-                progressBar.classList.remove('hidden');
-                progressFill.style.width = '0%';
+
+                // Get current language
+                const lang = document.documentElement.lang || 'en';
+                const translations = document.documentElement.getAttribute('data-translations') ?
+                                  JSON.parse(document.documentElement.getAttribute('data-translations')) :
+                                  { en: {}, de: {} };
+
+                // Map of category keys to translation keys
+                const categoryTranslations = {
+                    'clothing': 'categoryClothing',
+                    'personal': 'categoryPersonal',
+                    'beach': 'categoryBeach',
+                    'sauna': 'categorySauna',
+                    'hiking': 'categoryHiking',
+                    'climbing': 'categoryClimbing',
+                    'electronics': 'categoryElectronics',
+                    'travel': 'categoryTravel',
+                    'accommodation': 'categoryAccommodation',
+                    'misc': 'categoryMisc'
+                };
 
                 // Group items by category
                 const categories = {};
@@ -576,34 +597,54 @@
                     categories[item.category].push(item);
                 });
 
-                // Display items by category
-                for (const category in categories) {
-                    const categoryDiv = document.createElement('div');
-                    categoryDiv.className = 'mb-6 fade-in';
+                // Create a section for each category
+                Object.entries(categories).forEach(([category, categoryItems]) => {
+                    const categorySection = document.createElement('div');
+                    categorySection.className = 'mb-6';
 
-                    const categoryTitle = document.createElement('div');
-                    categoryTitle.className = 'mb-3';
+                    const categoryTitle = document.createElement('h3');
+                    categoryTitle.className = 'text-lg font-semibold text-gray-800 mb-3 border-b pb-1';
 
-                    const titleRow = document.createElement('div');
-                    titleRow.className = 'flex items-center justify-between mb-1';
-                    titleRow.innerHTML = `
-                        <h3 class="text-lg font-medium text-indigo-700 capitalize">${category}</h3>
-                        <span class="text-sm font-normal text-gray-500">0/${categories[category].length}</span>
-                    `;
+                    // Use translated category name
+                    const translationKey = categoryTranslations[category] || category;
+                    const translatedCategory = translations[lang]?.[translationKey] ||
+                                            (category.charAt(0).toUpperCase() + category.slice(1));
 
+                    categoryTitle.textContent = translatedCategory;
+                    categorySection.appendChild(categoryTitle);
+
+                    // Create progress bar container
+                    const progressContainer = document.createElement('div');
+                    progressContainer.className = 'mb-4';
+
+                    // Create progress text (counter)
+                    const progressText = document.createElement('div');
+                    progressText.className = 'flex justify-between items-center mb-1';
+
+                    const progressCount = document.createElement('span');
+                    progressCount.className = 'text-xs text-gray-500';
+                    progressCount.textContent = '0/0';
+
+                    progressText.appendChild(progressCount);
+
+                    // Create progress bar
                     const progressBar = document.createElement('div');
-                    progressBar.className = 'w-full bg-gray-200 rounded-full h-1.5 mb-1';
+                    progressBar.className = 'w-full bg-gray-200 rounded-full h-1.5';
                     progressBar.innerHTML = `
                         <div class="bg-indigo-600 h-1.5 rounded-full category-progress" style="width: 0%" data-category="${category}"></div>
                     `;
 
-                    categoryDiv.appendChild(titleRow);
-                    categoryDiv.appendChild(progressBar);
+                    // Append elements to container
+                    progressContainer.appendChild(progressText);
+                    progressContainer.appendChild(progressBar);
+
+                    // Add to category section
+                    categorySection.appendChild(progressContainer);
 
                     const itemsList = document.createElement('div');
                     itemsList.className = 'space-y-2';
 
-                    categories[category].forEach((item, index) => {
+                    categoryItems.forEach(item => {
                         const itemDiv = document.createElement('div');
                         itemDiv.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
                         itemDiv.dataset.category = category;
@@ -631,9 +672,12 @@
                         itemsList.appendChild(itemDiv);
                     });
 
-                    categoryDiv.appendChild(itemsList);
-                    packingList.appendChild(categoryDiv);
-                }
+                    categorySection.appendChild(itemsList);
+                    packingList.appendChild(categorySection);
+                });
+
+                // Update the packed count after rendering
+                updatePackedCount();
             }
 
             function updatePackedCount() {
@@ -670,9 +714,12 @@
                         progressElement.style.width = `${progress}%`;
 
                         // Update category count
-                        const countElement = progressElement.closest('.mb-6')?.querySelector('.text-sm');
-                        if (countElement) {
-                            countElement.textContent = `${checked}/${total}`;
+                        const progressContainer = progressElement.closest('.mb-4');
+                        if (progressContainer) {
+                            const countElement = progressContainer.querySelector('.text-xs');
+                            if (countElement) {
+                                countElement.textContent = `${checked}/${total}`;
+                            }
                         }
 
                         // Update progress bar color based on completion
