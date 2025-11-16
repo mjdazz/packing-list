@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Packing List Generator</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="js/i18n.js"></script>
     <link href="./output.css" rel="stylesheet">
     <style>
         .fade-in {
@@ -83,29 +85,35 @@
     </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen" data-lang="en">
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <header class="text-center mb-10 relative">
+            <div class="absolute top-0 right-0">
+                <button id="languageToggle" class="text-sm text-gray-600 hover:text-red-600 transition-colors">
+                    <span class="en">🇩🇪 DE</span>
+                    <span class="de hidden">🇬🇧 EN</span>
+                </button>
+            </div>
             <h1 class="text-4xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent mb-2">
-                🧳 Smart Packing List</h1>
-            <p class="text-gray-600">✨ Generate your perfect packing list based on your trip details ✨</p>
+                🧳 <span class="i18n" data-key="title">Smart Packing List</span></h1>
+            <p class="text-gray-600 i18n" data-key="subtitle">✨ Generate your perfect packing list based on your trip details ✨</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Trip Details Form -->
             <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-1">
-                <h2 class="text-xl font-semibold text-red-700 mb-4 border-b-2 border-red-100 pb-2">✈️ Trip Details</h2>
+                <h2 class="text-xl font-semibold text-red-700 mb-4 border-b-2 border-red-100 pb-2 i18n" data-key="tripDetails">✈️ Trip Details</h2>
 
                 <div class="space-y-5">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" id="nightsLabel">Number of
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="nightsLabel" data-key="nights">Number of
                             Nights</label>
                         <input type="number" id="nights" min="1" value="3"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" id="weatherLabel">Weather</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="weatherLabel" data-key="weather">Weather</label>
                         <select id="weather"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                             <option value="warm">☀️ Warm</option>
@@ -115,8 +123,8 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1"
-                            id="accommodationLabel">Accommodation Type</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n"
+                            id="accommodationLabel" data-key="accommodation">Accommodation Type</label>
                         <select id="accommodation"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
                             <option value="hotel">Hotel</option>
@@ -130,54 +138,54 @@
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="beach" class="rounded text-red-600 focus:ring-red-500">
-                                <span class="text-sm text-gray-700">Beach</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="beach">Beach</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="sauna" class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Sauna</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="sauna">Sauna</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="hiking"
                                     class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Hiking</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="hiking">Hiking</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="climbing"
                                     class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Climbing</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="climbing">Climbing</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="abroad"
                                     class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Abroad</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="abroad">Abroad</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="flight"
                                     class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Flight</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="flight">Flight</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="fotos" class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Photos</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="photos">Photos</span>
                             </label>
                         </div>
                         <div>
                             <label class="flex items-center space-x-2">
                                 <input type="checkbox" id="washing_machine"
                                     class="rounded text-indigo-600 focus:ring-indigo-500">
-                                <span class="text-sm text-gray-700">Washing Machine Available</span>
+                                <span class="text-sm text-gray-700 i18n" data-key="washingMachine">Washing Machine Available</span>
                             </label>
                         </div>
                     </div>
@@ -192,18 +200,17 @@
             <!-- Packing List -->
             <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2 packing-list">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-red-700 border-b-2 border-red-100 pb-2">📋 Your Packing List
-                    </h2>
+                    <h2 class="text-xl font-semibold text-red-700 border-b-2 border-red-100 pb-2 i18n" data-key="yourPackingList">📋 Your Packing List</h2>
                     <div class="text-sm text-gray-500">
-                        <span id="packedCount">0</span> <span id="packedStatusText">of</span> <span
-                            id="totalCount">0</span> <span id="packedText">packed</span>
+                        <span id="packedCount">0</span> <span id="packedStatusText" class="i18n" data-key="of">of</span> <span
+                            id="totalCount">0</span> <span id="packedText" class="i18n" data-key="packed">packed</span>
                     </div>
                 </div>
 
                 <div id="packingList" class="space-y-3">
                     <div class="text-center py-10 text-gray-400">
                         <i class="fas fa-suitcase text-4xl mb-2 text-indigo-300"></i>
-                        <p class="text-indigo-400">Enter your trip details and generate your packing list ✨</p>
+                        <p class="text-indigo-400 i18n" data-key="enterDetails">Enter your trip details and generate your packing list ✨</p>
                     </div>
                 </div>
 
@@ -334,17 +341,41 @@
                 // Generate packing list based on parameters
                 let items = [];
 
-                // Helper function to add item with duplicate check
-                function addItem(name, quantity, category) {
+                // Helper function to add item with duplicate check and translation
+                function addItem(itemKey, quantity, category) {
+                    // Get current language
+                    const lang = document.documentElement.lang || 'en';
+
+                    // Get translated item name
+                    let translatedName = translations[lang]?.[itemKey] || itemKey;
+
+                    // Handle pluralization for quantities > 1
+                    if (quantity > 1) {
+                        // Check if there's a plural form available
+                        const pluralKey = itemKey.endsWith('y') ?
+                            itemKey.slice(0, -1) + 'ies' :
+                            itemKey + 's';
+
+                        if (translations[lang]?.[pluralKey]) {
+                            translatedName = translations[lang][pluralKey];
+                        } else if (translations[lang]?.[itemKey + 's']) {
+                            translatedName = translations[lang][itemKey + 's'];
+                        }
+                    }
+
                     // Check if item already exists (case-insensitive)
                     const existingItem = items.find(item =>
-                        item.name.toLowerCase() === name.toLowerCase()
+                        item.name.toLowerCase() === translatedName.toLowerCase()
                     );
 
                     if (!existingItem) {
-                        items.push({ name, quantity, category });
+                        items.push({
+                            name: translatedName,
+                            originalKey: itemKey,
+                            quantity,
+                            category
+                        });
                     }
-                    // Could optionally merge quantities here if desired
                 }
 
                 // Clothing basics - adjust quantities based on washing machine availability
@@ -352,176 +383,176 @@
                     const shirtsQty = Math.min(7, Math.ceil(nights));
                     const underpantsQty = Math.min(7, Math.ceil(nights));
                     const socksQty = Math.min(7, Math.ceil(nights));
-                    addItem(shirtsQty === 1 ? 'Shirt' : 'Shirts', shirtsQty, 'clothing');
-                    addItem('Detergent', 1, 'clothing');
-                    addItem(underpantsQty === 1 ? 'Underpant' : 'Underpants', underpantsQty, 'clothing');
-                    addItem(socksQty === 1 ? 'Sock pair' : 'Sock pairs', socksQty, 'clothing');
+                    addItem('shirt', shirtsQty, 'clothing');
+                    addItem('detergent', 1, 'clothing');
+                    addItem('underpant', underpantsQty, 'clothing');
+                    addItem('sockPair', socksQty, 'clothing');
                 } else {
-                    addItem(nights === 1 ? 'Shirt' : 'Shirts', nights, 'clothing');
-                    addItem(nights === 1 ? 'Underpant' : 'Underpants', nights, 'clothing');
-                    addItem(nights === 1 ? 'Sock pair' : 'Sock pairs', nights, 'clothing');
+                    addItem('shirt', nights, 'clothing');
+                    addItem('underpant', nights, 'clothing');
+                    addItem('sockPair', nights, 'clothing');
                 }
 
                 if (weather === 'warm') {
-                    addItem('Sunscreen', 1, 'personal');
-                    addItem('Sunglasses', 1, 'personal');
+                    addItem('sunscreen', 1, 'personal');
+                    addItem('sunglasses', 1, 'personal');
                     if (washing_machine) {
                         const vestsQty = Math.min(2, Math.ceil(nights / 10));
                         const shortsQty = Math.min(2, Math.ceil(nights / 5));
-                        addItem(vestsQty === 1 ? 'Vest' : 'Vests', vestsQty, 'clothing');
-                        addItem(shortsQty === 1 ? 'Pair of shorts' : 'Pairs of shorts', shortsQty, 'clothing');
+                        addItem('vest', vestsQty, 'clothing');
+                        addItem('pairOfShorts', shortsQty, 'clothing');
                     } else {
                         const vestsQty = Math.ceil(nights / 10);
                         const shortsQty = Math.ceil(nights / 5);
-                        addItem(vestsQty === 1 ? 'Vest' : 'Vests', vestsQty, 'clothing');
-                        addItem(shortsQty === 1 ? 'Pair of shorts' : 'Pairs of shorts', shortsQty, 'clothing');
+                        addItem('vest', vestsQty, 'clothing');
+                        addItem('pairOfShorts', shortsQty, 'clothing');
                     }
                 } else if (weather === 'medium') {
-                    addItem('Jacket', 1, 'clothing');
+                    addItem('jacket', 1, 'clothing');
                     if (washing_machine) {
                         const vestsQty = Math.min(2, Math.ceil(nights / 5));
                         const shortsQty = Math.min(2, Math.ceil(nights / 5));
                         const pantsQty = Math.min(2, Math.ceil(nights / 5));
-                        addItem(vestsQty === 1 ? 'Vest' : 'Vests', vestsQty, 'clothing');
-                        addItem(shortsQty === 1 ? 'Pair of shorts' : 'Pairs of shorts', shortsQty, 'clothing');
-                        addItem(pantsQty === 1 ? 'Pair of pants' : 'Pairs of pants', pantsQty, 'clothing');
+                        addItem('vest', vestsQty, 'clothing');
+                        addItem('pairOfShorts', shortsQty, 'clothing');
+                        addItem('pairOfPants', pantsQty, 'clothing');
                     } else {
                         const qty = Math.ceil(nights / 5);
-                        addItem(qty === 1 ? 'Vest' : 'Vests', qty, 'clothing');
-                        addItem(qty === 1 ? 'Pair of shorts' : 'Pairs of shorts', qty, 'clothing');
-                        addItem(qty === 1 ? 'Pair of pants' : 'Pairs of pants', qty, 'clothing');
+                        addItem('vest', qty, 'clothing');
+                        addItem('pairOfShorts', qty, 'clothing');
+                        addItem('pairOfPants', qty, 'clothing');
                     }
                 } else if (weather === 'cold') {
-                    addItem('Jacket', 1, 'clothing');
-                    addItem('Pair of gloves', 1, 'clothing');
-                    addItem('Hat', 1, 'clothing');
+                    addItem('jacket', 1, 'clothing');
+                    addItem('pairOfGloves', 1, 'clothing');
+                    addItem('hat', 1, 'clothing');
                     if (washing_machine) {
                         const vestsQty = Math.min(2, Math.ceil(nights / 5));
                         const pantsQty = Math.min(2, Math.ceil(nights / 5));
-                        addItem(vestsQty === 1 ? 'Vest' : 'Vests', vestsQty, 'clothing');
-                        addItem(pantsQty === 1 ? 'Pair of pants' : 'Pairs of pants', pantsQty, 'clothing');
+                        addItem('vest', vestsQty, 'clothing');
+                        addItem('pairOfPants', pantsQty, 'clothing');
                     } else {
                         const qty = Math.ceil(nights / 5);
-                        addItem(qty === 1 ? 'Vest' : 'Vests', qty, 'clothing');
-                        addItem(qty === 1 ? 'Pair of pants' : 'Pairs of pants', qty, 'clothing');
+                        addItem('vest', qty, 'clothing');
+                        addItem('pairOfPants', qty, 'clothing');
                     }
                 }
 
                 if (nights > 5) {
-                    addItem('Additional pair of shoes', 1, 'clothing')
+                    addItem('additionalShoes', 1, 'clothing')
                 }
 
                 // Beach items
                 if (beach) {
-                    addItem('Swimsuit', 1, 'beach');
-                    addItem('Pair of flip flops', 1, 'beach');
-                    addItem('Beach towel', 1, 'beach');
-                    addItem('Sun hat', 1, 'beach');
+                    addItem('swimsuit', 1, 'beach');
+                    addItem('flipFlops', 1, 'beach');
+                    addItem('beachTowel', 1, 'beach');
+                    addItem('sunHat', 1, 'beach');
                 }
 
                 // Sauna items
                 if (sauna) {
-                    addItem('Swimsuit', 1, 'beach');
-                    addItem('Sauna towel', 1, 'sauna');
-                    addItem('Bathrobe', 1, 'sauna');
-                    addItem('Slippers', 1, '');
-                    addItem('Sauna hat', 1, 'sauna');
+                    addItem('swimsuit', 1, 'beach');
+                    addItem('saunaTowel', 1, 'sauna');
+                    addItem('bathrobe', 1, 'sauna');
+                    addItem('slippers', 1, 'sauna');
+                    addItem('saunaHat', 1, 'sauna');
                 }
 
                 // Hiking items
                 if (hiking) {
-                    addItem('Pair of hiking boots', 1, 'hiking');
-                    addItem('Pair of hiking pants', 1, 'hiking');
-                    addItem('Pair of hiking socks', 2, 'hiking');
-                    addItem('Hiking stick', 2, 'hiking');
-                    addItem('Backpack', 1, 'hiking');
-                    addItem('Water bag', 1, 'hiking');
-                    addItem('Hat', 1, 'clothing');
-                    addItem('Headlamp', 1, 'clothing');
+                    addItem('hikingBoots', 1, 'hiking');
+                    addItem('hikingPants', 1, 'hiking');
+                    addItem('hikingSocks', 2, 'hiking');
+                    addItem('hikingStick', 2, 'hiking');
+                    addItem('backpack', 1, 'hiking');
+                    addItem('waterBag', 1, 'hiking');
+                    addItem('hat', 1, 'clothing');
+                    addItem('headlamp', 1, 'clothing');
                     if (weather === 'medium') {
-                        addItem('Sunscreen', 1, 'personal');
-                        addItem('Sunglasses', 1, 'personal');
+                        addItem('sunscreen', 1, 'personal');
+                        addItem('sunglasses', 1, 'personal');
                     }
                 }
 
                 // Climbing items
                 if (climbing) {
-                    addItem('Pair of climbing shoes', 1, 'climbing');
-                    addItem('Via ferrata set', 1, 'climbing');
-                    addItem('Carabiner', 1, 'climbing');
-                    addItem('Climbing Harness', 1, 'climbing');
-                    addItem('Helmet', 1, 'climbing');
+                    addItem('climbingShoes', 1, 'climbing');
+                    addItem('viaFerrata', 1, 'climbing');
+                    addItem('carabiner', 1, 'climbing');
+                    addItem('climbingHarness', 1, 'climbing');
+                    addItem('helmet', 1, 'climbing');
                 }
 
                 // Electronics
-                addItem('Phone', 1, 'electronics');
-                addItem('Phone charger', 1, 'electronics');
-                addItem('Notebook', 1, 'electronics');
-                addItem('Notebook charger', 1, 'electronics');
-                addItem('Headphones', 1, 'electronics');
-                addItem('Power bank', 1, 'electronics');
-                addItem('Steam Deck', 1, 'electronics');
-                addItem('USB-C Adaptor', 1, 'electronics');
-                addItem('HDMI Cable', 1, 'electronics');
+                addItem('phone', 1, 'electronics');
+                addItem('phoneCharger', 1, 'electronics');
+                addItem('notebook', 1, 'electronics');
+                addItem('notebookCharger', 1, 'electronics');
+                addItem('headphones', 1, 'electronics');
+                addItem('powerBank', 1, 'electronics');
+                addItem('steamDeck', 1, 'electronics');
+                addItem('usbAdapter', 1, 'electronics');
+                addItem('hdmiCable', 1, 'electronics');
 
                 if (fotos) {
-                    addItem('Camera', 1, 'electronics');
-                    addItem('Camera charger', 1, 'electronics');
+                    addItem('camera', 1, 'electronics');
+                    addItem('cameraCharger', 1, 'electronics');
                 }
 
                 // Travel essentials
                 if (abroad) {
-                    addItem('Passport', 1, 'travel');
-                    addItem('Travel adapter', 1, 'travel');
+                    addItem('passport', 1, 'travel');
+                    addItem('travelAdapter', 1, 'travel');
                 }
 
                 if (flight) {
-                    addItem('Neck pillow', 1, 'travel');
-                    addItem('Pair of earplugs', 1, 'accommodation');
+                    addItem('neckPillow', 1, 'travel');
+                    addItem('earplugs', 1, 'accommodation');
                 }
 
                 // Accommodation items
                 const accommodationType = document.getElementById('accommodation').value;
 
                 if (accommodationType === 'hostel') {
-                    addItem('Padlock', 1, 'accommodation');
-                    addItem('Pair of earplugs', 1, 'accommodation');
-                    addItem('Slippers', 1, 'personal');
-                    addItem('Towels', 1, 'accommodation');
+                    addItem('padlock', 1, 'accommodation');
+                    addItem('earplugs', 1, 'accommodation');
+                    addItem('slippers', 1, 'personal');
+                    addItem('towels', 1, 'accommodation');
                 } else if (accommodationType === 'mountain_cabin') {
-                    addItem('Sleeping bag', 1, 'accommodation');
-                    addItem('Towel', 1, 'accommodation');
+                    addItem('sleepingBag', 1, 'accommodation');
+                    addItem('towel', 1, 'accommodation');
                 } else if (accommodationType === 'holiday_home') {
-                    addItem('Aeropress', 1, 'accommodation');
-                    addItem('Knife', 1, 'accommodation');
-                    addItem('Spicery', 1, 'accommodation');
+                    addItem('aeropress', 1, 'accommodation');
+                    addItem('knife', 1, 'accommodation');
+                    addItem('spicery', 1, 'accommodation');
                 }
 
                 // Personal care
-                addItem('Toothbrush', 1, 'personal');
-                addItem('Toothpaste', 1, 'personal');
-                addItem('Shower Gel', 1, 'personal');
-                addItem('Deodorant', 1, 'personal');
-                addItem('Comb/Brush', 1, 'personal');
-                addItem('Night Guard', 1, 'personal');
+                addItem('toothbrush', 1, 'personal');
+                addItem('toothpaste', 1, 'personal');
+                addItem('showerGel', 1, 'personal');
+                addItem('deodorant', 1, 'personal');
+                addItem('combBrush', 1, 'personal');
+                addItem('nightGuard', 1, 'personal');
                 if (nights > 3) {
-                    addItem('Shaver', 1, 'personal');
+                    addItem('shaver', 1, 'personal');
                 }
                 if (nights > 7) {
-                    addItem('Nail Clipper', 1, 'personal');
+                    addItem('nailClipper', 1, 'personal');
                 }
 
                 // Miscellaneous
-                addItem('Cash', 1, 'misc');
-                addItem('Water Bottle', 1, 'misc');
-                addItem('Driver\'s license', 1, 'misc');
-                addItem('Painkillers', 1, 'misc');
-                addItem('Band Aid', 1, 'misc');
-                addItem('Disinfectant', 1, 'misc');
-                addItem('Chewing gum', 1, 'misc');
-                addItem('Books/E-Reader', 1, 'misc');
-                addItem('Washing bag', 1, 'clothing');
-                addItem('Condoms', 1, 'misc');
+                addItem('cash', 1, 'misc');
+                addItem('waterBottle', 1, 'misc');
+                addItem('driversLicense', 1, 'misc');
+                addItem('painkillers', 1, 'misc');
+                addItem('bandAid', 1, 'misc');
+                addItem('disinfectant', 1, 'misc');
+                addItem('chewingGum', 1, 'misc');
+                addItem('books', 1, 'misc');
+                addItem('washingBag', 1, 'clothing');
+                addItem('condoms', 1, 'misc');
 
                 console.log('Generated items:', items); // Debug log
                 // Display the packing list
