@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: CNAME
+      - id: end-of-file-fixer
+        exclude: CNAME
+      - id: check-added-large-files
+        exclude: CNAME
+      - id: detect-private-key
+        exclude: CNAME
