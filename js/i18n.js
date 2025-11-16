@@ -172,7 +172,7 @@ const translations = {
         sunHat: 'Sonnenhut',
         saunaTowel: 'Saunatuch',
         bathrobe: 'Bademantel',
-        slippers: 'Hausschuhe',
+        slippers: 'Badeschuhe',
         saunaHat: 'Saunahut',
         hikingBoots: 'Wanderschuhe',
         hikingPants: 'Wanderhose',
