@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Packing List Generator</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="../output.css" rel="stylesheet">
+    <link href="./styles/accessibility.css" rel="stylesheet">
+    <link href="./styles/print.css" rel="stylesheet">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .checkbox-container:hover .checkmark {
+            border-color: #dc2626;
+        }
+
+        .checkbox-container input:checked~.checkmark {
+            background-color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-2 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .trip-details {
+                order: 2;
+            }
+
+            .packing-list {
+                order: 1;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .category-header {
+            background-color: #fee2e2;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .custom-item-form {
+            background-color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" data-lang="en">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="text-center mb-10 relative">
+            <div class="absolute top-0 right-0">
+                <button id="languageToggle" class="text-sm text-gray-600 hover:text-red-600 transition-colors" aria-label="Switch language">
+                    <span class="en" aria-hidden="false">🇩🇪 DE</span>
+                    <span class="de hidden" aria-hidden="true">🇬🇧 EN</span>
+                </button>
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-red-600 to-red-800 bg-clip-text text-transparent mb-2">
+                🧳 <span class="i18n" data-key="title">Smart Packing List</span></h1>
+            <p class="text-gray-600 i18n" data-key="subtitle">✨ Generate your perfect packing list based on your trip details ✨</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Trip Details Form -->
+            <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-1">
+                <h2 class="text-xl font-semibold text-red-700 mb-4 border-b-2 border-red-100 pb-2 i18n" data-key="tripDetails">✈️ Trip Details</h2>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="nightsLabel" data-key="nights">Number of
+                            Nights</label>
+                        <input type="number" id="nights" min="1" value="3"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="weatherLabel" data-key="weather">Weather</label>
+                        <select id="weather" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <option value="warm" data-i18n="weatherWarm">☀️ Warm</option>
+                            <option value="medium" selected data-i18n="weatherMedium">🌤️ Medium</option>
+                            <option value="cold" data-i18n="weatherCold">❄️ Cold</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1 i18n" id="accommodationLabel" data-key="accommodation">Accommodation Type</label>
+                        <select id="accommodation" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <option value="hotel" data-i18n="accommodationHotel">Hotel</option>
+                            <option value="hostel" data-i18n="accommodationHostel">Hostel</option>
+                            <option value="mountain_cabin" data-i18n="accommodationMountainCabin">Mountain Cabin</option>
+                            <option value="holiday_home" data-i18n="accommodationHolidayHome">Holiday Home</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="beach" class="rounded text-red-600 focus:ring-red-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="beach">Beach</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="sauna" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="sauna">Sauna</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="hiking"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="hiking">Hiking</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="climbing"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="climbing">Climbing</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="abroad"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="abroad">Abroad</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="flight"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="flight">Flight</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="fotos" class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="photos">Photos</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="washing_machine"
+                                    class="rounded text-indigo-600 focus:ring-indigo-500">
+                                <span class="text-sm text-gray-700 i18n" data-key="washingMachine">Washing Machine Available</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="generateBtn"
+                        class="w-full bg-gradient-to-r from-red-600 to-red-800 text-white py-3 px-4 rounded-lg hover:from-red-700 hover:to-red-900 transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shadow-md">
+                        ✨ Generate Packing List ✨
+                    </button>
+                </div>
+            </div>
+
+            <!-- Packing List -->
+            <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2 packing-list">
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                    <h2 class="text-xl font-semibold text-red-700 border-b-2 border-red-100 pb-2 i18n" data-key="yourPackingList">📋 Your Packing List</h2>
+                    <div class="flex items-center gap-2">
+                        <div class="flex gap-2">
+                            <button
+                                id="saveTemplateBtn"
+                                class="text-xs px-2 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                aria-label="Save current configuration as template"
+                            >
+                                💾 Save
+                            </button>
+                            <button
+                                id="loadTemplateBtn"
+                                class="text-xs px-2 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                aria-label="Load saved template"
+                            >
+                                📂 Load
+                            </button>
+                            <button
+                                id="printBtn"
+                                class="text-xs px-2 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                aria-label="Print packing list"
+                            >
+                                🖨️ Print
+                            </button>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <span id="packedCount">0</span> <span id="packedStatusText" class="i18n" data-key="of">of</span> <span
+                                id="totalCount">0</span> <span id="packedText" class="i18n" data-key="packed">packed</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Aria-live region for screen reader announcements -->
+                <div aria-live="polite" aria-atomic="true" class="sr-only">
+                    <span id="packingStatusAnnouncement"></span>
+                </div>
+
+                <div id="packingList" class="space-y-3">
+                    <div class="text-center py-10 text-gray-400">
+                        <i class="fas fa-suitcase text-4xl mb-2 text-indigo-300"></i>
+                        <p class="text-indigo-400 i18n" data-key="enterDetails">Enter your trip details and generate your packing list ✨</p>
+                    </div>
+                </div>
+
+                <div id="progressBar" class="mt-6 hidden">
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="progressFill" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Custom Items Section -->
+                <div class="mt-6 p-4 bg-gray-50 rounded-lg border-2 border-gray-200">
+                    <h3 class="text-md font-semibold text-gray-700 mb-3 i18n" data-key="customItems">
+                        ✏️ Custom Items
+                    </h3>
+
+                    <form id="customItemForm" class="flex flex-col sm:flex-row gap-2 mb-4">
+                        <input
+                            type="text"
+                            id="customItemName"
+                            placeholder="Item name"
+                            class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            aria-label="Custom item name"
+                            required
+                        />
+                        <input
+                            type="number"
+                            id="customItemQty"
+                            min="1"
+                            value="1"
+                            class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            aria-label="Quantity"
+                        />
+                        <select
+                            id="customItemCategory"
+                            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                            aria-label="Category"
+                        >
+                            <option value="misc">Miscellaneous</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="personal">Personal Care</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="beach">Beach</option>
+                            <option value="hiking">Hiking</option>
+                        </select>
+                        <button
+                            type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                            aria-label="Add custom item"
+                        >
+                            + Add
+                        </button>
+                    </form>
+
+                    <div id="customItemsList" class="space-y-2">
+                        <!-- Dynamically rendered custom items -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template Modal -->
+    <div id="templateModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" role="dialog" aria-labelledby="templateModalTitle" aria-modal="true">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-96 overflow-y-auto">
+            <h3 id="templateModalTitle" class="text-lg font-semibold mb-4">Manage Templates</h3>
+
+            <!-- Save Section -->
+            <div id="saveTemplateSection" class="mb-4 pb-4 border-b">
+                <h4 class="text-sm font-medium mb-2">Save Current Configuration</h4>
+                <div class="flex gap-2">
+                    <input
+                        type="text"
+                        id="templateName"
+                        placeholder="Template name (e.g., Beach Weekend)"
+                        class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        aria-label="Template name"
+                    />
+                    <button
+                        id="confirmSaveTemplate"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none"
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
+
+            <!-- Load Section -->
+            <div id="loadTemplateSection">
+                <h4 class="text-sm font-medium mb-2">Saved Templates</h4>
+                <div id="templateList" class="space-y-2">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <button
+                id="closeTemplateModal"
+                class="mt-4 w-full px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 focus:outline-none"
+            >
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>

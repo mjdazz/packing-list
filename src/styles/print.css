@@ -1,0 +1,84 @@
+/* Print styles */
+
+.print-header {
+  display: none;
+}
+
+@media print {
+  /* Hide controls and non-essential elements */
+  .trip-details,
+  button,
+  #customItemForm,
+  #customItemsList,
+  #progressBar,
+  #languageToggle,
+  #templateModal {
+    display: none !important;
+  }
+
+  /* Full width packing list */
+  .packing-list {
+    grid-column: 1 / -1 !important;
+    box-shadow: none !important;
+  }
+
+  /* Show checkboxes for manual checking */
+  .checkbox-container input {
+    position: static !important;
+    opacity: 1 !important;
+    margin-right: 0.5rem;
+  }
+
+  /* Avoid page breaks within categories */
+  .mb-6 {
+    page-break-inside: avoid;
+  }
+
+  /* Clean background */
+  body {
+    background: white !important;
+  }
+
+  .bg-gray-50 {
+    background: white !important;
+  }
+
+  /* Print header */
+  .print-header {
+    display: block !important;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #000;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Ensure proper spacing */
+  .space-y-2 > * + * {
+    margin-top: 0.5rem;
+  }
+
+  /* Remove shadows */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Optimize for black and white printing */
+  .text-red-700,
+  .text-gray-700 {
+    color: #000 !important;
+  }
+
+  .border-red-100 {
+    border-color: #000 !important;
+  }
+
+  /* Hide category progress bars in print */
+  .category-progress {
+    display: none !important;
+  }
+
+  /* Better checkbox appearance */
+  .checkmark {
+    border: 1px solid #000 !important;
+    background: white !important;
+  }
+}

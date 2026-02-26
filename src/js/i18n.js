@@ -1,5 +1,5 @@
 // Language strings
-const translations = {
+export const translations = {
     en: {
         title: 'Smart Packing List',
         subtitle: '✨ Generate your perfect packing list based on your trip details ✨',
@@ -123,7 +123,10 @@ const translations = {
         accommodationHotel: 'Hotel',
         accommodationHostel: 'Hostel',
         accommodationMountainCabin: 'Mountain Cabin',
-        accommodationHolidayHome: 'Holiday Home'
+        accommodationHolidayHome: 'Holiday Home',
+
+        // Custom items
+        customItems: '✏️ Custom Items'
     },
     de: {
         title: 'Intelligente Packliste',
@@ -248,12 +251,15 @@ const translations = {
         accommodationHotel: 'Hotel',
         accommodationHostel: 'Hostel',
         accommodationMountainCabin: 'Berghütte',
-        accommodationHolidayHome: 'Ferienwohnung'
+        accommodationHolidayHome: 'Ferienwohnung',
+
+        // Custom items
+        customItems: '✏️ Eigene Gegenstände'
     }
 };
 
 // Function to set the language
-function setLanguage(lang) {
+export function setLanguage(lang) {
     // Update the HTML lang attribute
     document.documentElement.lang = lang;
     document.body.setAttribute('data-lang', lang);
@@ -300,19 +306,20 @@ function setLanguage(lang) {
         }
     });
 
-    // Update select options
+    // Update select options with data-i18n attribute
     const selectElements = document.querySelectorAll('select');
     selectElements.forEach(select => {
-        const options = select.querySelectorAll('option');
+        const options = select.querySelectorAll('option[data-i18n]');
         options.forEach(option => {
-            // Find the span with i18n class inside the option
-            const i18nSpan = option.querySelector('.i18n');
-            if (i18nSpan) {
-                const key = i18nSpan.getAttribute('data-key');
-                if (key && translations[lang] && translations[lang][key]) {
-                    // Update the text of the span, not the option directly
-                    i18nSpan.textContent = translations[lang][key];
-                }
+            const key = option.getAttribute('data-i18n');
+            if (key && translations[lang] && translations[lang][key]) {
+                // Extract emoji prefix if present
+                const text = option.textContent;
+                const emojiMatch = text.match(/^([\u{1F300}-\u{1F9FF}][\u{FE00}-\u{FE0F}]?|[\u{2600}-\u{26FF}][\u{FE00}-\u{FE0F}]?)\s*/u);
+                const emoji = emojiMatch ? emojiMatch[0] : '';
+
+                // Update option text with emoji + translation
+                option.textContent = emoji + translations[lang][key];
             }
         });
     });
@@ -327,7 +334,7 @@ function setLanguage(lang) {
 }
 
 // Initialize the language
-function initLanguage() {
+export function initLanguage() {
     // Check for saved language preference or use browser language
     const savedLang = localStorage.getItem('preferredLanguage');
     const browserLang = navigator.language.split('-')[0];
@@ -344,5 +351,4 @@ function initLanguage() {
     });
 }
 
-// Call initLanguage when the DOM is loaded
-document.addEventListener('DOMContentLoaded', initLanguage);
+// initLanguage will be called from main.js
