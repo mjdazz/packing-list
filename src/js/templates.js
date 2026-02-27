@@ -45,11 +45,19 @@ export class TemplateManager {
       ? window.appState.customItemsManager.getAll()
       : [];
 
+    // Capture checklist state
+    const checklistState = [];
+    const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checklistState.push(checkbox.checked);
+    });
+
     const template = {
       id: crypto.randomUUID(),
       name: name.trim(),
       formData,
       customItems: JSON.parse(JSON.stringify(customItems)), // Deep clone
+      checklistState,
       createdAt: Date.now()
     };
 
@@ -98,6 +106,23 @@ export class TemplateManager {
       window.generatePackingList();
     }
 
+    // Restore checklist state after a short delay to ensure DOM is updated
+    if (template.checklistState) {
+      setTimeout(() => {
+        const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+        template.checklistState.forEach((checked, index) => {
+          if (checkboxes[index]) {
+            checkboxes[index].checked = checked;
+          }
+        });
+
+        // Update packed count
+        if (window.appState && window.appState.uiManager) {
+          window.appState.uiManager.updatePackedCount();
+        }
+      }, 100);
+    }
+
     return true;
   }
 
@@ -109,39 +134,53 @@ export class TemplateManager {
 
   renderTemplateList() {
     const container = document.getElementById('templateList');
-    if (!container) return;
+    console.log('renderTemplateList called, container:', container, 'templates:', this.templates);
+
+    if (!container) {
+      console.error('templateList container not found!');
+      return;
+    }
 
     if (!this.templates.length) {
       container.innerHTML = '<p class="text-sm text-gray-500 italic">No saved templates</p>';
       return;
     }
 
-    container.innerHTML = this.templates
+    const html = this.templates
       .sort((a, b) => b.createdAt - a.createdAt)
       .map(template => `
-        <div class="flex items-center justify-between p-3 bg-gray-50 rounded border border-gray-200">
-          <div class="flex-1">
+        <div class="p-3 bg-gray-50 rounded border border-gray-200">
+          <div class="mb-2">
             <p class="text-sm font-medium text-gray-700">${this.escapeHtml(template.name)}</p>
             <p class="text-xs text-gray-500">${new Date(template.createdAt).toLocaleDateString()}</p>
           </div>
           <div class="flex gap-2">
             <button
-              class="load-template text-sm text-green-600 hover:text-green-800 focus:outline-none focus:underline"
+              class="load-template flex-1 text-sm px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+              style="background-color: #16a34a; color: white;"
               data-id="${template.id}"
               aria-label="Load template ${this.escapeHtml(template.name)}"
+              onmouseover="this.style.backgroundColor='#15803d'"
+              onmouseout="this.style.backgroundColor='#16a34a'"
             >
-              Load
+              📂 Load
             </button>
             <button
-              class="delete-template text-sm text-red-600 hover:text-red-800 focus:outline-none focus:underline"
+              class="delete-template text-sm px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+              style="background-color: #dc2626; color: white;"
               data-id="${template.id}"
               aria-label="Delete template ${this.escapeHtml(template.name)}"
+              onmouseover="this.style.backgroundColor='#b91c1c'"
+              onmouseout="this.style.backgroundColor='#dc2626'"
             >
-              Delete
+              🗑️ Delete
             </button>
           </div>
         </div>
       `).join('');
+
+    console.log('Setting innerHTML:', html);
+    container.innerHTML = html;
 
     this.attachTemplateEventListeners();
   }
@@ -155,96 +194,58 @@ export class TemplateManager {
   init() {
     // Save template button
     const saveBtn = document.getElementById('saveTemplateBtn');
-    if (saveBtn) {
+    const templateNameInput = document.getElementById('templateName');
+
+    if (saveBtn && templateNameInput) {
       saveBtn.addEventListener('click', () => {
-        this.showModal('save');
-      });
-    }
-
-    // Load template button
-    const loadBtn = document.getElementById('loadTemplateBtn');
-    if (loadBtn) {
-      loadBtn.addEventListener('click', () => {
-        this.showModal('load');
-      });
-    }
-
-    // Confirm save
-    const confirmBtn = document.getElementById('confirmSaveTemplate');
-    if (confirmBtn) {
-      confirmBtn.addEventListener('click', () => {
-        const name = document.getElementById('templateName').value.trim();
+        const name = templateNameInput.value.trim();
         if (name) {
           this.saveTemplate(name);
-          document.getElementById('templateName').value = '';
+          templateNameInput.value = '';
           notify.success('Template saved successfully!');
+        } else {
+          notify.error('Please enter a template name');
+        }
+      });
+
+      // Allow Enter key to save
+      templateNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          saveBtn.click();
         }
       });
     }
 
-    // Close modal
-    const closeBtn = document.getElementById('closeTemplateModal');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        this.hideModal();
-      });
-    }
-
-    // Close on backdrop click
-    const modal = document.getElementById('templateModal');
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target.id === 'templateModal') {
-          this.hideModal();
-        }
-      });
-    }
+    // Initial render
+    this.renderTemplateList();
   }
 
   attachTemplateEventListeners() {
-    document.querySelectorAll('.load-template').forEach(btn => {
+    const loadButtons = document.querySelectorAll('.load-template');
+    const deleteButtons = document.querySelectorAll('.delete-template');
+
+    console.log('Attaching listeners - Load buttons:', loadButtons.length, 'Delete buttons:', deleteButtons.length);
+
+    loadButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = e.target.dataset.id;
+        console.log('Load clicked for template:', id);
         if (this.loadTemplate(id)) {
-          this.hideModal();
           notify.success('Template loaded successfully!');
         }
       });
     });
 
-    document.querySelectorAll('.delete-template').forEach(btn => {
+    deleteButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = e.target.dataset.id;
         const template = this.templates.find(t => t.id === id);
         if (template && confirm(`Delete template "${template.name}"?`)) {
           this.deleteTemplate(id);
+          notify.success('Template deleted');
         }
       });
     });
-  }
-
-  showModal(mode) {
-    const modal = document.getElementById('templateModal');
-    if (!modal) return;
-
-    modal.classList.remove('hidden');
-
-    // Focus management for accessibility
-    if (mode === 'save') {
-      const templateName = document.getElementById('templateName');
-      if (templateName) {
-        setTimeout(() => templateName.focus(), 100);
-      }
-    }
-
-    // Render template list
-    this.renderTemplateList();
-  }
-
-  hideModal() {
-    const modal = document.getElementById('templateModal');
-    if (modal) {
-      modal.classList.add('hidden');
-    }
   }
 }
