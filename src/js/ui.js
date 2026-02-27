@@ -84,15 +84,15 @@ export class UIManager {
       categorySection.appendChild(progressContainer);
 
       const itemsList = document.createElement('div');
-      itemsList.className = 'space-y-2';
+      itemsList.className = 'space-y-4';
 
       categoryItems.forEach(item => {
         const itemDiv = document.createElement('div');
-        itemDiv.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+        itemDiv.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg';
         itemDiv.dataset.category = category;
 
         const label = document.createElement('label');
-        label.className = 'checkbox-container flex items-center space-x-3 cursor-pointer';
+        label.className = 'checkbox-container flex items-center gap-3 cursor-pointer';
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
