@@ -1,5 +1,6 @@
 // Template management
 import { notify } from './notifications.js';
+import { escapeHtml } from './escapeHtml.js';
 
 export class TemplateManager {
   constructor() {
@@ -134,12 +135,7 @@ export class TemplateManager {
 
   renderTemplateList() {
     const container = document.getElementById('templateList');
-    console.log('renderTemplateList called, container:', container, 'templates:', this.templates);
-
-    if (!container) {
-      console.error('templateList container not found!');
-      return;
-    }
+    if (!container) return;
 
     if (!this.templates.length) {
       container.innerHTML = '<p class="text-sm text-gray-500 italic">No saved templates</p>';
@@ -151,7 +147,7 @@ export class TemplateManager {
       .map(template => `
         <div class="p-3 bg-gray-50 rounded border border-gray-200">
           <div class="mb-2">
-            <p class="text-sm font-medium text-gray-700">${this.escapeHtml(template.name)}</p>
+            <p class="text-sm font-medium text-gray-700">${escapeHtml(template.name)}</p>
             <p class="text-xs text-gray-500">${new Date(template.createdAt).toLocaleDateString()}</p>
           </div>
           <div class="flex gap-2">
@@ -159,7 +155,7 @@ export class TemplateManager {
               class="load-template flex-1 text-sm px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
               style="background-color: #16a34a; color: white;"
               data-id="${template.id}"
-              aria-label="Load template ${this.escapeHtml(template.name)}"
+              aria-label="Load template ${escapeHtml(template.name)}"
               onmouseover="this.style.backgroundColor='#15803d'"
               onmouseout="this.style.backgroundColor='#16a34a'"
             >
@@ -169,7 +165,7 @@ export class TemplateManager {
               class="delete-template text-sm px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
               style="background-color: #dc2626; color: white;"
               data-id="${template.id}"
-              aria-label="Delete template ${this.escapeHtml(template.name)}"
+              aria-label="Delete template ${escapeHtml(template.name)}"
               onmouseover="this.style.backgroundColor='#b91c1c'"
               onmouseout="this.style.backgroundColor='#dc2626'"
             >
@@ -179,16 +175,9 @@ export class TemplateManager {
         </div>
       `).join('');
 
-    console.log('Setting innerHTML:', html);
     container.innerHTML = html;
 
     this.attachTemplateEventListeners();
-  }
-
-  escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   init() {
@@ -225,12 +214,9 @@ export class TemplateManager {
     const loadButtons = document.querySelectorAll('.load-template');
     const deleteButtons = document.querySelectorAll('.delete-template');
 
-    console.log('Attaching listeners - Load buttons:', loadButtons.length, 'Delete buttons:', deleteButtons.length);
-
     loadButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = e.target.dataset.id;
-        console.log('Load clicked for template:', id);
         if (this.loadTemplate(id)) {
           notify.success('Template loaded successfully!');
         }

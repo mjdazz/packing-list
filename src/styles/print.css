@@ -11,8 +11,7 @@
   #customItemForm,
   #customItemsList,
   #progressBar,
-  #languageToggle,
-  #templateModal {
+  #languageToggle {
     display: none !important;
   }
 

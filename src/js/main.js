@@ -16,8 +16,6 @@ window.appState = {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('Initializing Smart Packing List...');
-
   // Initialize i18n
   initLanguage();
 
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Load saved state if it exists
   window.appState.stateManager.restoreState();
 
-  console.log('Application initialized successfully');
 });
 
 // Make generatePackingList available globally for i18n to call

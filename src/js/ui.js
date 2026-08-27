@@ -1,6 +1,7 @@
 // UI rendering and DOM manipulation
 import { translations } from './i18n.js';
 import { categoryTranslations } from './packingList.js';
+import { escapeHtml } from './escapeHtml.js';
 
 export class UIManager {
   constructor() {
@@ -26,9 +27,6 @@ export class UIManager {
 
     // Get current language
     const lang = document.documentElement.lang || 'en';
-    const translationsData = document.documentElement.getAttribute('data-translations') ?
-      JSON.parse(document.documentElement.getAttribute('data-translations')) :
-      { en: {}, de: {} };
 
     // Group items by category
     const categories = {};
@@ -49,7 +47,7 @@ export class UIManager {
 
       // Use translated category name
       const translationKey = categoryTranslations[category] || category;
-      const translatedCategory = translationsData[lang]?.[translationKey] ||
+      const translatedCategory = translations[lang]?.[translationKey] ||
         (category.charAt(0).toUpperCase() + category.slice(1));
 
       categoryTitle.textContent = translatedCategory;

@@ -267,9 +267,6 @@ export function setLanguage(lang) {
     // Save the selected language to localStorage
     localStorage.setItem('preferredLanguage', lang);
 
-    // Store translations in the document's dataset for easy access
-    document.documentElement.setAttribute('data-translations', JSON.stringify(translations));
-
     // Update the language toggle button
     const languageToggle = document.getElementById('languageToggle');
     if (languageToggle) {
@@ -324,12 +321,9 @@ export function setLanguage(lang) {
         });
     });
 
-    // Trigger a custom event for dynamic content that needs to update
-    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
-
     // Regenerate the packing list if it exists
-    if (typeof generatePackingList === 'function') {
-        generatePackingList();
+    if (window.generatePackingList) {
+        window.generatePackingList();
     }
 }
 
@@ -350,5 +344,3 @@ export function initLanguage() {
         setLanguage(newLang);
     });
 }
-
-// initLanguage will be called from main.js

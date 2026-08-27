@@ -1,4 +1,6 @@
 // Custom items management
+import { escapeHtml } from './escapeHtml.js';
+
 export class CustomItemsManager {
   constructor() {
     this.customItems = this.loadFromStorage();
@@ -70,7 +72,7 @@ export class CustomItemsManager {
     container.innerHTML = this.customItems.map(item => `
       <div class="flex items-center justify-between p-3 bg-white rounded border border-gray-200">
         <span class="text-sm text-gray-700">
-          ${this.escapeHtml(item.name)}
+          ${escapeHtml(item.name)}
           ${item.quantity > 1 ? `<span class="text-gray-500">(${item.quantity})</span>` : ''}
           <span class="text-xs text-gray-400 ml-2">${item.category}</span>
         </span>
@@ -78,14 +80,14 @@ export class CustomItemsManager {
           <button
             class="edit-custom-item text-sm text-blue-600 hover:text-blue-800 focus:outline-none focus:underline"
             data-id="${item.id}"
-            aria-label="Edit ${this.escapeHtml(item.name)}"
+            aria-label="Edit ${escapeHtml(item.name)}"
           >
             Edit
           </button>
           <button
             class="delete-custom-item text-sm text-red-600 hover:text-red-800 focus:outline-none focus:underline"
             data-id="${item.id}"
-            aria-label="Delete ${this.escapeHtml(item.name)}"
+            aria-label="Delete ${escapeHtml(item.name)}"
           >
             Delete
           </button>
@@ -94,12 +96,6 @@ export class CustomItemsManager {
     `).join('');
 
     this.attachItemEventListeners();
-  }
-
-  escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   init() {

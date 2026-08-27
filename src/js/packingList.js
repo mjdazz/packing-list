@@ -2,8 +2,6 @@
 import { translations } from './i18n.js';
 
 export function generatePackingList(formData, customItemsManager = null) {
-  console.log('Generating packing list with:', formData);
-
   const {
     nights,
     weather,
@@ -245,7 +243,6 @@ export function generatePackingList(formData, customItemsManager = null) {
     });
   }
 
-  console.log('Generated items:', items);
   return items;
 }
 
