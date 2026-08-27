@@ -36,37 +36,37 @@ A modern, accessible single-page application that generates customized packing l
 
 ```bash
 # Install dependencies
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm install
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm install
 
 # Development server (with hot reload)
-docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:20 npm run dev
+docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:24 npm run dev
 # Then open http://localhost:3000
 
 # Build for production (outputs single HTML file)
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
 # Output: dist/index.html
 
 # Preview production build
-docker run --rm -v "$(pwd):/app" -w /app -p 4173:4173 node:20 npm run preview
+docker run --rm -v "$(pwd):/app" -w /app -p 4173:4173 node:24 npm run preview
 ```
 
 ### Development Workflow
 
 1. **First time setup**:
    ```bash
-   docker run --rm -v "$(pwd):/app" -w /app node:20 npm install
+   docker run --rm -v "$(pwd):/app" -w /app node:24 npm install
    ```
 
 2. **Start development server**:
    ```bash
-   docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:20 npm run dev
+   docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:24 npm run dev
    ```
 
 3. **Make your changes** - files are watched and auto-reload
 
 4. **Build for deployment**:
    ```bash
-   docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+   docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
    ```
 
 ## 📁 Project Structure
@@ -133,7 +133,7 @@ packing-list/
 
 - **Frontend**: Vanilla JavaScript (ES6+ modules)
 - **Styling**: TailwindCSS v4
-- **Build Tool**: Vite v5
+- **Build Tool**: Vite v8
 - **Bundling**: vite-plugin-singlefile (outputs single HTML)
 - **Deployment**: GitHub Pages with GitHub Actions
 - **Storage**: localStorage with schema validation
@@ -196,14 +196,14 @@ This is a personal project, but suggestions are welcome!
 2. Create a feature branch
 3. Run all npm commands in containers:
    ```bash
-   docker run --rm -v "$(pwd):/app" -w /app node:20 npm install
-   docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:20 npm run dev
+   docker run --rm -v "$(pwd):/app" -w /app node:24 npm install
+   docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:24 npm run dev
    ```
 4. Make your changes
 5. Test thoroughly (including accessibility)
 6. Build in container to verify:
    ```bash
-   docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+   docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
    ```
 7. Submit a pull request
 
