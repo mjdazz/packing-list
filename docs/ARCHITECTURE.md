@@ -31,7 +31,7 @@ The Smart Packing List Generator is a single-page application built with vanilla
 
 - **Language**: JavaScript ES6+ (modules)
 - **Styling**: TailwindCSS v4
-- **Build Tool**: Vite v5
+- **Build Tool**: Vite v8
 - **Bundler Plugin**: vite-plugin-singlefile v2
 - **Deployment**: GitHub Pages with GitHub Actions
 - **Storage**: localStorage with schema versioning
@@ -486,7 +486,7 @@ async restoreState() {
 
 ### Vite Configuration
 
-The build system uses Vite 5 with `vite-plugin-singlefile` to achieve the single-page requirement:
+The build system uses Vite 8 with `vite-plugin-singlefile` to achieve the single-page requirement:
 
 ```javascript
 // vite.config.js
@@ -497,10 +497,9 @@ export default defineConfig({
     assetsInlineLimit: 100000000,
     chunkSizeWarningLimit: 100000000,
     cssCodeSplit: false,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        inlineDynamicImports: true,
-        manualChunks: undefined
+        inlineDynamicImports: true
       }
     }
   }
@@ -513,7 +512,7 @@ All build commands are run in containers to avoid local filesystem pollution:
 
 ```bash
 # Build in container
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
 ```
 
 **Process flow**:
@@ -539,7 +538,7 @@ npm run build (in container)
 
 **Development** (run in container):
 ```bash
-docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:20 npm run dev
+docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:24 npm run dev
 ```
 - Hot Module Replacement (HMR)
 - Fast refresh on file changes
@@ -549,7 +548,7 @@ docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:20 npm run dev
 
 **Production** (run in container):
 ```bash
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
 ```
 - Single HTML file output
 - Minified JavaScript
@@ -574,7 +573,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - Checkout code
-      - Setup Node.js 20
+      - Setup Node.js 24
       - npm ci
       - npm run build
       - Deploy dist/ to gh-pages branch
@@ -592,7 +591,7 @@ jobs:
 
 ### Containerized Development Environment
 
-All local development and build commands are executed in Docker containers using the official Node.js 20 image:
+All local development and build commands are executed in Docker containers using the official Node.js 24 image:
 
 **Why Containers?**
 - Avoids polluting local filesystem with node_modules
@@ -603,7 +602,7 @@ All local development and build commands are executed in Docker containers using
 
 **Container Command Pattern**:
 ```bash
-docker run --rm -v "$(pwd):/app" -w /app [ports] node:20 [npm command]
+docker run --rm -v "$(pwd):/app" -w /app [ports] node:24 [npm command]
 ```
 
 **Flags explained**:
@@ -611,21 +610,21 @@ docker run --rm -v "$(pwd):/app" -w /app [ports] node:20 [npm command]
 - `-v "$(pwd):/app"`: Mount current directory to /app in container
 - `-w /app`: Set working directory to /app
 - `-p 3000:3000`: Port mapping (only for dev server)
-- `node:20`: Official Node.js 20 Docker image
+- `node:24`: Official Node.js 24 Docker image
 
 **Common Commands**:
 ```bash
 # Install dependencies
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm install
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm install
 
 # Development (with port mapping)
-docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:20 npm run dev
+docker run --rm -v "$(pwd):/app" -w /app -p 3000:3000 node:24 npm run dev
 
 # Production build
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
 
 # Preview build (with port mapping)
-docker run --rm -v "$(pwd):/app" -w /app -p 4173:4173 node:20 npm run preview
+docker run --rm -v "$(pwd):/app" -w /app -p 4173:4173 node:24 npm run preview
 ```
 
 **File Permissions**:

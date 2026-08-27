@@ -18,6 +18,7 @@ This is a **single-page application** and must remain one forever. Do not split 
 - **No local npm installs.** Run all npm/node commands in Docker containers.
 - **Vanilla JS only.** No React, Vue, Svelte, or any UI framework. Ever.
 - **Immutable data patterns.** Don't mutate objects in place; create new ones.
+- **Update docs with every change.** Always verify that `README.md` and `docs/ARCHITECTURE.md` stay consistent with code changes (versions, commands, config, structure).
 
 ## Structure
 
@@ -29,6 +30,6 @@ This is a **single-page application** and must remain one forever. Do not split 
 ## Build
 
 ```bash
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm install
-docker run --rm -v "$(pwd):/app" -w /app node:20 npm run build
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm install
+docker run --rm -v "$(pwd):/app" -w /app node:24 npm run build
 ```
